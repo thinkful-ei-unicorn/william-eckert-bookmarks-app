@@ -5,18 +5,18 @@ import store from './store';
 import api from './api';
 
 const generateItemElement = function (item) {
-  function ratingLabel (item){
+  function ratingLabel(item) {
     let starsView = []
-    if (item.rating > 1){
-     
-      for (let i = 0; i < item.rating; i++){
+    if (item.rating > 1) {
+
+      for (let i = 0; i < item.rating; i++) {
         starsView.push(`<label type="radio" checked="checked" class="starView" >☆</label>`)
-      } 
+      }
     }
     return starsView.join(' ')
   }
-  
-  let itemTitle =   `
+
+  let itemTitle = `
       <form id="js-edit-item-form">
         <input class="bookmark-item" type="text" value="${item.title}" required/>
       </form> 
@@ -37,11 +37,11 @@ const generateItemElement = function (item) {
       
     `;
   if (!item.expanded) {
-    itemTitle = 
-    `<div class="bookmark-box">
+    itemTitle =
+      `<div class="bookmark-box">
     <span class="bookmark-item bookmark-item__expanded">${item.title}</span>
     <div class="rating-box">${ratingLabel(item)}</div></div> `;
-    
+
   }
 
   return `
@@ -66,7 +66,7 @@ const generateError = function (message) {
     `;
 };
 
-const renderError = function (){
+const renderError = function () {
   if (store.error) {
     const el = generateError(store.error);
     $('.error-container').html(el);
@@ -75,7 +75,7 @@ const renderError = function (){
   }
 };
 
-const handleCloseError = function (){
+const handleCloseError = function () {
   $('.main-view').on('click', '#cancel-error', () => {
     store.setError(null);
     renderError();
@@ -86,83 +86,77 @@ const render = function () {
   renderError();
   // Filter item list by item rating 
   let items = [...store.bookmarks];
-  
-   items = items.filter(item => item.rating >= store.filter);
-  
+
+  items = items.filter(item => item.rating >= store.filter);
+
 
   // render the bookmark list in the DOM
   const bookmarkListItemsString = generatebookmarkItemsString(items);
 
-  
-  
-  
+
+
+
   // insert that HTML into the DOM
-  if (store.adding == false){
+  if (store.adding == false) {
     let html = `<div class="new-bookmark-form"> </div>
     <div class = "my-bookmarks-view">
     <header>
-<h2>My Bookmarks</h2>
-<form id="initial-view">
-<button class="initial-view-new">
-  <span class="button-label">New</span>
-</button>
-  <select id="ratings" name="ratings">
-    <option> <span class="button-label"></span>Filter By</span></option>
-    <option value="1">1 star</option>
-    <option value="2">2 stars</option>
-    <option value="3">3 stars</option>
-    <option value="4">4 stars</option>
-    <option value="5">5 stars</option>
-  </select>
-</form>
-</header>
+      <h2>My Bookmarks</h2>
+      <form id="initial-view">
+      <button class="initial-view-new">
+        <span class="button-label">New</span>
+      </button>
+        <select id="ratings" name="ratings">
+          <option> <span class="button-label"></span>Filter By</span></option>
+          <option value="1">1 star</option>
+          <option value="2">2 stars</option>
+          <option value="3">3 stars</option>
+          <option value="4">4 stars</option>
+          <option value="5">5 stars</option>
+        </select>
+      </form>
+      </header>
 <ul class="bookmark-list js-bookmark-list"></ul>
     </div>`
     $(".main-view").html(html)
-  $('.js-bookmark-list').html(bookmarkListItemsString);
+    $('.js-bookmark-list').html(bookmarkListItemsString);
   } else {
     $(".my-bookmarks-view").empty()
   }
 };
-/*function serializeJson(form) {
-    const formData = new FormData(form);
+
+$.fn.extend({
+  serializeJson: function () {
+    const formData = new FormData(this[0]);
     const o = {};
     formData.forEach((val, name) => o[name] = val);
     return JSON.stringify(o);
   }
- */ 
-$.fn.extend({
-    serializeJson: function() {
-      const formData = new FormData(this[0]);
-      const o = {};
-      formData.forEach((val, name) => o[name] = val);
-      return JSON.stringify(o);
-    }
-  });
+});
 
 const handleNewItemSubmit = function () {
   $('.main-view').on("submit", "#js-new-bookmark-form", event => {
-     
+
     event.preventDefault();
-  
+
     const bookmark = $(event.target).serializeJson();
 
     api.createItem(bookmark)
-    
-    .then((bookmark)=> {
-    store.addItem(bookmark);
-    store.adding = false;
-    store.filter = 0;
-    addNewForm()
-    render();
+
+      .then((bookmark) => {
+        store.addItem(bookmark);
+        store.adding = false;
+        store.filter = 0;
+        addNewForm()
+        render();
+      })
+      .catch((error) => {
+        store.setError(error.message);
+        renderError();
+      });
+
+
   })
-  .catch((error) => {
-    store.setError(error.message);
-    renderError();
-  });
- 
-  
-})
 
 };
 
@@ -179,38 +173,38 @@ const handleDeleteItemClicked = function () {
     const id = getItemIdFromElement(event.currentTarget);
     // delete the item
     api.deleteItem(id)
-    .then(()=> {
-    store.findAndDelete(id);
+      .then(() => {
+        store.findAndDelete(id);
 
-    // render the updated bookmark list
-    render();
-    })
-    .catch((error) => {
-      
-      store.setError(error.message);
-      renderError();
-    })
+        // render the updated bookmark list
+        render();
+      })
+      .catch((error) => {
+
+        store.setError(error.message);
+        renderError();
+      })
   });
 };
 
 const handleEditbookmarkItemSubmit = function () {
-  $('.main-view').on('submit','#js-edit-item-form', event => {
+  $('.main-view').on('submit', '#js-edit-item-form', event => {
     event.preventDefault();
     const id = getItemIdFromElement(event.currentTarget);
     const itemName = $(event.currentTarget).find('.bookmark-item').val();
- 
-    api.updateItem(id, {title:itemName})
-    
-    .then((newItem) => {
-      store.findAndUpdate(id, {title:itemName});
-      store.filter = 0;
-    render();
-  })
-    .catch((error) => {
-      console.log(error);
-      store.setError(error.message);
-      renderError();
-    })
+
+    api.updateItem(id, { title: itemName })
+
+      .then((newItem) => {
+        store.findAndUpdate(id, { title: itemName });
+        store.filter = 0;
+        render();
+      })
+      .catch((error) => {
+        console.log(error);
+        store.setError(error.message);
+        renderError();
+      })
   })
 };
 
@@ -220,49 +214,49 @@ const handleItemExpandClicked = function () {
     const id = getItemIdFromElement(event.currentTarget);
     const item = store.findById(id);
     item.expanded = !item.expanded
- 
+
     render();
-    
-    
+
+
   });
 };
 const handleOkClicked = function () {
   $('.main-view').on('click', '.js-item-toggle', event => {
-   
+
     const id = getItemIdFromElement(event.currentTarget);
     const item = store.findById(id);
     item.expanded = !item.expanded
-  
+
     render();
-    
-    
+
+
   });
 };
 
 
-const handleFilterClick = function (){
+const handleFilterClick = function () {
 
   let filterValue = $("#ratings option:selected").val();
   store.filter = filterValue;
 
-render()
-  
+  render()
+
 }
 
 
-const handleNewCancel = function (){
-  $(".main-view").on("click", ".cancel", function(){
+const handleNewCancel = function () {
+  $(".main-view").on("click", ".cancel", function () {
     event.preventDefault();
-   
+
     store.adding = false
-    
+
     addNewForm();
     render();
   })
 }
-const handleNewSubmit = function (){
+const handleNewSubmit = function () {
 
-  $(".main-view").on("click", ".initial-view-new", function(){
+  $(".main-view").on("click", ".initial-view-new", function () {
     event.preventDefault();
     console.log("clicked new");
     store.adding = true
@@ -270,15 +264,15 @@ const handleNewSubmit = function (){
     addNewForm();
   })
 }
-const addNewForm = function (){
-  if(store.adding){
-  const newForm = ` 
+const addNewForm = function () {
+  if (store.adding) {
+    const newForm = ` 
   <div class="error-container"> </div>
   <form id="js-new-bookmark-form">
   
   <label for="bookmark-entry">Add New Bookmark:</label><br>
   
-  <input type="text" name="url" class="bookmark-url-entry" value="http(s)://"placeholder="e.g., Nytimes.com" required><br>
+  <input type="text" name="url" class="bookmark-url-entry" placeholder="e.g., Nytimes.com" required><br>
   
   <label for="bookmark-title-entry">Bookmark Title:</label><br>
   <input type="text" name="title" class="bookmark-title-entry" placeholder="e.g., NYTimes" ><br>
@@ -317,10 +311,10 @@ const addNewForm = function (){
   <button class="cancel" type="reset">cancel</button>
 </form>`
 
-  
 
-  $(".new-bookmark-form").html(newForm)
-  
+
+    $(".new-bookmark-form").html(newForm)
+
   } else {
     $(".new-bookmark-form").empty()
   }
@@ -334,7 +328,7 @@ const bindEventListeners = function () {
   handleDeleteItemClicked();
   handleEditbookmarkItemSubmit();
   handleCloseError();
-  $(".main-view").on('change','#ratings', handleFilterClick);
+  $(".main-view").on('change', '#ratings', handleFilterClick);
   handleNewSubmit();
   handleNewCancel();
   handleOkClicked();
