@@ -34,7 +34,7 @@ justify-content: space-between;
   display: inline-block;
 }
 .bookmark-item__expanded{
-  color: orangered;
+  color: rgb(146, 5, 5);
 }
 
 #js-new-bookmark-form > input{ 
@@ -83,7 +83,7 @@ body {
   font-size: 18px;
   margin-top: 5px;
   margin-bottom: 10px;
-  color: grey;
+  color: #4D4D4D;
 }
 .bookmark-list > li {
   margin: 0 30px 20px 30px;
@@ -127,7 +127,7 @@ input:disabled{
 
 /***--links--****/
 a:link {
-  color: orangered;
+  color: #992900;
 }
 a:visited{
   color: orange;
@@ -203,7 +203,7 @@ a:active{
 }
 .starView {
   
-  color: #FFD700 ;
+  color: black ;
   
 }
 @media all and (min-width: 600px){

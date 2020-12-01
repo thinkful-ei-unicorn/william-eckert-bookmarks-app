@@ -18,7 +18,8 @@ const generateItemElement = function (item) {
 
   let itemTitle = `
       <form id="js-edit-item-form">
-        <input class="bookmark-item" type="text" value="${item.title}" required/>
+        <label for='bookmark-item'>Bookmark Name<br></label>
+        <input id='bookmark-item'class="bookmark-item" type="text" value="${item.title}" required/>
       </form> 
       <div class="rating-box">
       ${ratingLabel(item)}
@@ -270,25 +271,25 @@ const addNewForm = function () {
   <div class="error-container"> </div>
   <form id="js-new-bookmark-form">
   
-  <label for="bookmark-entry">Add New Bookmark:</label><br>
+  <label for="bookmark-entry">Add New Bookmark:<br></label>  
+  <input id= 'bookmark-entry' type="text" name="url" class="bookmark-url-entry" value="https://" placeholder="e.g., Nytimes.com" required><br>
   
-  <input type="text" name="url" class="bookmark-url-entry" placeholder="e.g., Nytimes.com" required><br>
-  
+
   <label for="bookmark-title-entry">Bookmark Title:</label><br>
-  <input type="text" name="title" class="bookmark-title-entry" placeholder="e.g., NYTimes" ><br>
+  <input id='bookmark-title-entry' type="text" name="title" class="bookmark-title-entry" placeholder="e.g., NYTimes" ><br>
   <label for="bookmark-rating-entry">Rating:</label><br>
   <div class="txt-center">
         <div class="rating">
         
-            <input id="star5" name="rating" type="radio" value="5" class="radio-btn hide" />
+            <input  id="bookmark-rating-entry" id="star5" name="rating" type="radio" value="5" class="radio-btn hide" />
             <label for="star5" >☆</label>
-            <input id="star4" name="rating" type="radio" value="4" class="radio-btn hide" />
+            <input  id="bookmark-rating-entry"id="star4" name="rating" type="radio" value="4" class="radio-btn hide" />
             <label for="star4" >☆</label>
-            <input id="star3" name="rating" type="radio" value="3" class="radio-btn hide" />
+            <input  id="bookmark-rating-entry"id="star3" name="rating" type="radio" value="3" class="radio-btn hide" />
             <label for="star3" >☆</label>
-            <input id="star2" name="rating" type="radio" value="2" class="radio-btn hide" />
+            <input  id="bookmark-rating-entry"id="star2" name="rating" type="radio" value="2" class="radio-btn hide" />
             <label for="star2" >☆</label>
-            <input id="star1" name="rating" type="radio" value="1" class="radio-btn hide" />
+            <input  id="bookmark-rating-entry"id="star1" name="rating" type="radio" value="1" class="radio-btn hide" />
             <label for="star1" >☆</label>
             <div class="clear"></div>
             
@@ -306,7 +307,8 @@ const addNewForm = function () {
         </div>
  
 </div>
-<input type="text" name="desc" class="bookmark-description-entry" placeholder="description"><br>
+<label for='description'>A description of the website</label>
+<input id='description'type="text" name="desc" class="bookmark-description-entry" placeholder="description"><br>
   <button class="create" type="submit">create</button>
   <button class="cancel" type="reset">cancel</button>
 </form>`
