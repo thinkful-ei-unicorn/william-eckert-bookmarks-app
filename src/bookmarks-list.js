@@ -212,7 +212,7 @@ const handleEditbookmarkItemSubmit = function () {
 };
 
 const handleItemExpandClicked = function () {
-  $('.main-view').on('click', '.bookmark-item__expanded', event => {
+  $('.main-view').on('click', '.js-item-element', event => {
 
     const id = getItemIdFromElement(event.currentTarget);
     const item = store.findById(id);
