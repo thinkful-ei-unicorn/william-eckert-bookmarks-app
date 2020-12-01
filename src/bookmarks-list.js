@@ -95,6 +95,8 @@ const render = function () {
   const bookmarkListItemsString = generatebookmarkItemsString(items);
 
 
+  //adding this function into render function not into event listeners
+  addNewForm();
 
 
   // insert that HTML into the DOM
@@ -148,7 +150,7 @@ const handleNewItemSubmit = function () {
         store.addItem(bookmark);
         store.adding = false;
         store.filter = 0;
-        addNewForm()
+        //addNewForm()
         render();
       })
       .catch((error) => {
@@ -251,7 +253,6 @@ const handleNewCancel = function () {
 
     store.adding = false
 
-    addNewForm();
     render();
   })
 }
@@ -262,7 +263,7 @@ const handleNewSubmit = function () {
     console.log("clicked new");
     store.adding = true
 
-    addNewForm();
+    render()
   })
 }
 const addNewForm = function () {
@@ -307,7 +308,7 @@ const addNewForm = function () {
         </div>
  
 </div>
-<label for='description'>A description of the website</label>
+<label for='description'>A description of the website:<br></label>
 <input id='description'type="text" name="desc" class="bookmark-description-entry" placeholder="description"><br>
   <button class="create" type="submit">create</button>
   <button class="cancel" type="reset">cancel</button>
@@ -320,7 +321,6 @@ const addNewForm = function () {
   } else {
     $(".new-bookmark-form").empty()
   }
-  render();
 }
 
 
