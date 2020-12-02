@@ -9,12 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thinkful-ei-unicorn/Ozzie_Harb-bookmarks-app/tree/gh-pages"
+    "url": "git+https://github.com/thinkful-ei-unicorn/William-Eckert-bookmarks-app/tree/gh-pages"
   },
   "keywords": [
     "bookmarks"
   ],
-  "author": "Ozzie Harb",
+  "author": "William Eckert",
   "license": "ISC",
   "bugs": {
     "url": "https://thinkful-ei-unicorn.github.io/Ozzie_Harb-bookmarks-app/"
